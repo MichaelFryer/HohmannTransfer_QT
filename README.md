@@ -1,4 +1,4 @@
-# Hohmann Transfer Calculator QT
+# Hohmann Transfer Calculator
 Calculates Hohmann transfer delta-v requirements for Kerbal Space Program
 
 Not a hugely useful tool, could easily be implemented in a spreadsheet.
