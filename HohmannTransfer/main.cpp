@@ -15,6 +15,7 @@
 //along with HohmannTransfer Calculator.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "celestialbody.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -22,6 +23,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
+
+
 
     return a.exec();
 }

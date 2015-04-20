@@ -28,6 +28,35 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Lock the window to the size it's set to in the designer
     setFixedSize(this->geometry().width(),this->geometry().height());
+
+    // Create the data for the celestial bodies
+    celestialBodies.append(CelestialBody(tr("Kerbol"), 1.7565670e+28, 2.616e+8));
+    celestialBodies.append(CelestialBody(tr(" - Moho"), 2.5263617e+21, 2.500e+5));
+    celestialBodies.append(CelestialBody(tr(" - Eve"), 1.2244127e+23, 7.000e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Gilly"), 1.2420512e+17, 1.300e+4));
+    celestialBodies.append(CelestialBody(tr(" - Kerbin"), 5.2915793e+22, 6.000e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Mun"), 9.7600236e+20, 2.000e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Minmus"), 2.6457897e+19, 6.000e+4));
+    celestialBodies.append(CelestialBody(tr(" - Duna"), 4.5154812e+21, 3.200e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Ike"), 2.7821949e+20, 1.300e+5));
+    celestialBodies.append(CelestialBody(tr(" - Dres"), 3.2191322e+20, 1.380e+5));
+    celestialBodies.append(CelestialBody(tr(" - Jool"), 4.2332635e+24, 6.000e+6));
+    celestialBodies.append(CelestialBody(tr(" - - Laythe"), 2.9397663e+22, 5.000e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Vall"), 3.1088028e+21, 3.000e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Tylo"), 4.2332635e+22, 6.000e+5));
+    celestialBodies.append(CelestialBody(tr(" - - Bop"), 3.7261536e+19, 6.500e+4));
+    celestialBodies.append(CelestialBody(tr(" - - Pol"), 1.0813636e+19, 4.400e+4));
+    celestialBodies.append(CelestialBody(tr(" - Eeloo"), 1.1149358e+21, 2.100e+5));
+
+    // Populate the combo box with celestial body data
+    for (auto it = celestialBodies.begin(); it != celestialBodies.end(); ++it)
+    {
+        ui->comboBox_body->addItem(it->name);
+    }
+
+    // Select Kerbin
+    ui->comboBox_body->setCurrentIndex(4);
+
 }
 
 
@@ -41,17 +70,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_calculate_clicked()
 {
-    qreal r1, r2;
-    qreal v1, v2;
-    qreal u;
-
-    bool r1IsNumeric, r2IsNumeric;
-    CelestialBody selectedBody(tr("Test"), 5.2915793e+22, 6.000e+5);
-    u = selectedBody.StandardGravityParamter();
-
     // Read input
-    r1 = ui->lineEdit_initialOrbit->text().toDouble(&r1IsNumeric);
-    r2 = ui->lineEdit_finalOrbit->text().toDouble(&r2IsNumeric);
+    bool r1IsNumeric, r2IsNumeric;
+    qreal r1 = ui->lineEdit_initialOrbit->text().toDouble(&r1IsNumeric);
+    qreal r2 = ui->lineEdit_finalOrbit->text().toDouble(&r2IsNumeric);
+    CelestialBody selectedBody =  celestialBodies[ui->comboBox_body->currentIndex()];
 
     // Check input was numeric
     if (!r1IsNumeric){
@@ -82,8 +105,9 @@ void MainWindow::on_pushButton_calculate_clicked()
     }
 
     // Calculate v1 and v2 delta-v changes (and make them absolute)
-    v1 = qSqrt(u / r1) * (qSqrt((2 * r2) / (r1 + r2)) - 1);
-    v2 = qSqrt(u / r2) * (1 - qSqrt((2 * r1) / (r1 + r2)));
+    qreal u = selectedBody.StandardGravityParamter();
+    qreal v1 = qSqrt(u / r1) * (qSqrt((2 * r2) / (r1 + r2)) - 1);
+    qreal v2 = qSqrt(u / r2) * (1 - qSqrt((2 * r1) / (r1 + r2)));
 
 
     // Output results

@@ -17,7 +17,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "celestialbody.h"
 #include <QMainWindow>
+
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +38,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QList<CelestialBody> celestialBodies;
+
 };
 
 #endif // MAINWINDOW_H
